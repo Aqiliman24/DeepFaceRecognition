@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+
+
+</head>
+<body>
+    <div class = "img" >
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images1">
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images2">
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images3">
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images4">
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images5">
+        <img src="../static/images/logo-mploy-v2-vertical.png" alt="images6">
+    </div>
+    <div class="container">
+        <center><h1>Face Recognition</h1><br>
+        <div class="circle"><video id="recordedVideo" autoplay playinline></video></div>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+        <h2>Verify to clock in</h2>
+        <p>Make sure your head is in the circle while we scan your face</p></center>
+    </div><br>
+    
+</body>
+</html>
