@@ -9,6 +9,7 @@ import json
 import shutil
 import os
 import boto3
+from botocore.exceptions import NoCredentialsError
 # import socket
 # import base64
 # import io
@@ -27,6 +28,19 @@ AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID_RECOGNITION')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY_RECOGNITION')
 AWS_BUCKET = os.getenv('AWS_BUCKET_RECOGNITION')
 AWS_LOCATION = os.getenv('AWS_LOCATION_RECOGNITION')
+
+def check_AWS_folder(saved_dir):
+    # Create an S3 client
+    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    
+    # Check if the object exists in the bucket
+    response = s3.list_objects_v2(Bucket=AWS_BUCKET, Prefix=saved_dir)
+    print (response['KeyCount'])
+
+    if response['KeyCount'] != 0:
+        return True
+    else:
+        return False
 
 
 def connectAWS(saved_dir,saved_folder):
@@ -242,9 +256,6 @@ def main():
 
 
 
-
-
-
 # ------------------------------------------------------------------------------------------------------------------------------------
 # Recognition Phase
 
@@ -278,7 +289,7 @@ def upload_video():
     directory = 'dataset/'
     user =  nric + '-' + name + '/'
     saved_dir = 'dataset/' + nric + '-' + name + '/'
-    (saved_dir)
+    readAWS(saved_dir)
         
     result = {
         'name': name,
@@ -286,7 +297,6 @@ def upload_video():
         'encodings_match': False
         
     }
-
     
     # Check if video is available
     while video_loop:
@@ -367,6 +377,27 @@ def upload_video():
 
 # Recognition Phase
 # ------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+# Checking if exist
+# -----------------------------------------------------------------------------------------------------------------------------------
+@app.route('/checking',methods = ["POST"])
+def checking():
+    nric = request.values['nric']
+    name = request.values['name']
+    saved_dir = 'dataset/' + nric + '-' + name + '/'
+    check_result = check_AWS_folder(saved_dir)
+    if check_result:
+        result = {'message': True}
+    else:
+        result = {'message' :False }
+
+    print(check_result)
+    return result
+
+        
 
 
 if __name__ == '__main__':
